@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>فلوچارت مراحل پیاده‌سازی پروژه</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #0d47a1;
+      --secondary: #ffb300;
+      --accent: #4fc3f7;
+      --light: #f5f9ff;
+      --dark: #1a237e;
+      --success: #66bb6a;
+      --text: #263238;
+      --text-light: #546e7a;
+      --card-bg: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.08);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Vazirmatn", "Tahoma", sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      color: var(--text);
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 380px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+      border-radius: 0 0 40px 40px;
+      z-index: -1;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px 70px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+      padding-top: 20px;
+    }
+    
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .subtitle {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    
+    .flowchart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      position: relative;
+      margin-top: 30px;
+    }
+    
+    /* خط اتصال عمودی */
+    .flowchart::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(to bottom, var(--secondary), var(--accent));
+      border-radius: 4px;
+      z-index: 0;
+    }
+    
+    .step {
+      background: var(--card-bg);
+      border-left: 5px solid var(--primary);
+      border-radius: 16px;
+      padding: 25px 30px 25px 25px;
+      width: 85%;
+      text-align: right;
+      box-shadow: 0 10px 30px var(--shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .step:hover {
+      transform: translateY(-5px) scale(1.01);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      border-left-color: var(--secondary);
+    }
+    
+    .step-icon {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 20px;
+      flex-shrink: 0;
+      color: white;
+      font-size: 24px;
+      box-shadow: 0 5px 15px rgba(13, 71, 161, 0.3);
+    }
+    
+    .step-content {
+      flex: 1;
+    }
+    
+    .step strong {
+      font-size: 20px;
+      display: block;
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+    
+    .step span {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text-light);
+    }
+    
+    .step-number {
+      position: absolute;
+      left: -15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--secondary);
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      box-shadow: 0 3px 10px rgba(255, 179, 0, 0.5);
+    }
+    
+    .connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 20px;
+      height: 40px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .connector i {
+      background: white;
+      border-radius: 50%;
+      padding: 5px;
+      box-shadow: 0 0 0 4px rgba(79, 195, 247, 0.3);
+    }
+    
+    footer {
+      margin-top: 70px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-light);
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 12px;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* طراحی ریسپانسیو */
+    @media (max-width: 768px) {
+      .step {
+        width: 95%;
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .step-icon {
+        margin-left: 0;
+        margin-bottom: 15px;
+      }
+      
+      .flowchart::before {
+        left: 30px;
+      }
+      
+      .step-number {
+        left: 15px;
+      }
+      
+      h1 {
+        font-size: 26px;
+      }
+    }
+    
+    /* انیمیشن ها */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .step {
+      animation: fadeIn 0.6s ease forwards;
+    }
+    
+    .step:nth-child(2) { animation-delay: 0.1s; }
+    .step:nth-child(4) { animation-delay: 0.2s; }
+    .step:nth-child(6) { animation-delay: 0.3s; }
+    .step:nth-child(8) { animation-delay: 0.4s; }
+    .step:nth-child(10) { animation-delay: 0.5s; }
+    .step:nth-child(12) { animation-delay: 0.6s; }
+    .step:nth-child(14) { animation-delay: 0.7s; }
+    .step:nth-child(16) { animation-delay: 0.8s; }
+    
+    /* افکت هاله نور هنگام هاور */
+    .step:hover .step-icon {
+      animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(13, 71, 161, 0.4); }
+      70% { box-shadow: 0 0 0 12px rgba(13, 71, 161, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(13, 71, 161, 0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>فلوچارت مراحل روش پیاده‌سازی پروژه ساختمانی</h1>
+      <p class="subtitle">روند کامل پیاده‌سازی پروژه از تحلیل اولیه تا استقرار نهایی به همراه ماژول‌های تخصصی</p>
+    </header>
+    
+    <div class="flowchart">
+      <div class="step">
+        <div class="step-icon">
+          <i class="fas fa-drafting-compass"></i>
+        </div>
+        <div class="step-content">
+          <strong>۱) تحلیل و طراحی سیستم</strong>
+          <span>استخراج نیازمندی‌ها، مدل داده و طراحی معماری (UML) برای کل سامانه با درنظرگیری قابلیت توسعه پذیری آینده.</span>
+        </div>
+        <div class="step-number">۱</div>
+      </div>
+      
+      <div class="connector">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+      
+      <div class="step">
+        <div class="step-icon">
+          <i class="fas fa-database"></i>
+        </div>
+        <div class="step-content">
+          <strong>۲) ایجاد زیرساخت Backend و Database</strong>
+          <span>راه‌اندازی سرور امن، دیتابیس PostgreSQL و کش Redis برای عملکرد بالا و امنیت داده‌های حساس.</span>
+        </div>
+        <div class="step-number">۲</div>
+      </div>
+      
+      <div class="connector">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+      
+      <div class="step">
+        <div class="step-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="step-content">
+          <strong>۳) ماژول قیمت مصالح</strong>
+          <span>جمع‌آوری و پردازش هوشمند قیمت‌ها، ذخیره تاریخچه و نمایش تحلیلی در قالب جدول و نمودارهای پیشرفته.</span>
+        </div>
+        <div class="step-number">۳</div>
+      </div>
+      
+      <div class="connector">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+      
+      <div class="step">
+        <div class="step-icon">
+          <i class="fas fa-warehouse"></i>
+        </div>
+        <div class="step-content">
+          <strong>۴) ماژول فروشندگان مصالح</strong>
+          <span>ایجاد بانک اطلاعات جامع فروشندگان، فیلتر هوشمند بر اساس مصالح و موقعیت مکانی روی نقشه تعاملی.</span>
+        </div>
+        <div class="step-number">۴</div>
+      </div>
+      
+      <div class="connector">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+      
+      <div class="step">
+        <div class="step-icon">
+          <i class="fas fa-gavel"></i>
+        </div>
+        <div class="step-content">
+          <strong>۵) ماژول مناقصات و اعلان‌ها</strong>
+          <span>استخراج خودکار مناقصات از منابع رسمی و ارسال اعلان فوری از طریق پیامک و ایمیل به کاربران.</span>
+        </div>
+        <div class="step-number">۵</div>
+      </div>
+      
+      <div class="connector">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+      
+      <div class="step">
+        <div class="step-icon">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div class="step-content">
+          <strong>۶) توسعه چت‌بات NLP فارسی</strong>
+          <span>طراحی و پیاده‌سازی سامانه هوش مصنوعی برای درک پرسش‌های محاوره‌ای فارسی و پاسخ هوشمند.</span>
+        </div>
+        <div class="step-number">۶</div>
+      </div>
+      
+      <div class="connector">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+      
+      <div class="step">
+        <div class="step-icon">
+          <i class="fas fa-chart-pie"></i>
+        </div>
+        <div class="step-content">
+          <strong>۷) داشبورد مدیریتی و UI وب/موبایل</strong>
+          <span>داشبورد تحت وب پیشرفته برای مدیریت داده‌ها و طراحی UI مدرن و واکنشگرا برای کاربران نهایی.</span>
+        </div>
+        <div class="step-number">۷</div>
+      </div>
+      
+      <div class="connector">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+      
+      <div class="step">
+        <div class="step-icon">
+          <i class="fas fa-check-double"></i>
+        </div>
+        <div class="step-content">
+          <strong>۸) تست، دیباگ و استقرار</strong>
+          <span>انجام تست‌های واحد و سیستمی، بهینه‌سازی عملکرد و انتشار نسخه پایدار با پشتیبانی کامل.</span>
+        </div>
+        <div class="step-number">۸</div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>© ۲۰۲۵ – فلوچارت صنعتی ویژه پروپوزال چت‌بات ساختمانی | طراحی شده با <i class="fas fa-heart" style="color: #e91e63;"></i></p>
+    </footer>
+  </div>
+
+  <script>
+    // افزودن تعاملپذیری بیشتر
+    document.addEventListener('DOMContentLoaded', function() {
+      const steps = document.querySelectorAll('.step');
+      
+      steps.forEach(step => {
+        step.addEventListener('click', function() {
+          this.classList.toggle('active');
+        });
+      });
+      
+      // افکت اسکرول برای ظاهر شدن تدریجی المان‌ها
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+      
+      steps.forEach(step => {
+        step.style.opacity = 0;
+        step.style.transform = 'translateY(20px)';
+        step.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(step);
+      });
+    });
+  </script>
+</body>
+</html>
